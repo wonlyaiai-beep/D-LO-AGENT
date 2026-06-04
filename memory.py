@@ -1,9 +1,9 @@
 import redis
 import json
-from config import REDIS_HOST, REDIS_PORT, CACHE_TTL
+from config import REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, CACHE_TTL
 
 # Redis connection
-r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
+r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, decode_responses=True)
 
 def save_message(session_id, role, content):
     """Conversation history save karo"""
