@@ -1,0 +1,4 @@
+groq
+redis
+python-dotenv
+langsmith
