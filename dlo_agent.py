@@ -26,7 +26,7 @@ async def get_response(session_id, user_message):
             response = client.chat.completions.create(
                 model=model,
                 messages=messages,
-                max_tokens=500,
+                max_tokens=170,
                 temperature=0.7
             )
             
