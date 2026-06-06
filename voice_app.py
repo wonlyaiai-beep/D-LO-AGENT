@@ -28,5 +28,41 @@ async def chat(request: ChatRequest):
     session_id = str(uuid.uuid4())
     user_message = request.messages[-1].content
     response = await get_response(session_id, user_message)
-    
+
     async def generate():
+        chunk = {
+            "id": "chatcmpl-123",
+            "object": "chat.completion.chunk",
+            "model": "custom",
+            "choices": [{
+                "index": 0,
+                "delta": {
+                    "role": "assistant",
+                    "content": response
+                },
+                "finish_reason": None
+            }]
+        }
+        yield f"data: {json.dumps(chunk)}\n\n"
+
+        final = {
+            "id": "chatcmpl-123",
+            "object": "chat.completion.chunk",
+            "model": "custom",
+            "choices": [{
+                "index": 0,
+                "delta": {},
+                "finish_reason": "stop"
+            }]
+        }
+        yield f"data: {json.dumps(final)}\n\n"
+        yield "data: [DONE]\n\n"
+
+    return StreamingResponse(
+        generate(),
+        media_type="text/event-stream"
+    )
+
+@app.get("/health")
+async def health():
+    return {"status": "D'LO Voice Agent Online!"}
