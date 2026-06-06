@@ -2,3 +2,5 @@ groq
 redis
 python-dotenv
 langsmith
+fastapi
+uvicorn

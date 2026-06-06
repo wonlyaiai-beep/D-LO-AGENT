@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import uuid
-import asyncio
 from dlo_agent import get_response
 
 app = FastAPI()
@@ -28,11 +27,16 @@ async def chat(request: ChatRequest):
     user_message = request.messages[-1].content
     response = await get_response(session_id, user_message)
     return {
+        "id": "chatcmpl-123",
+        "object": "chat.completion",
+        "model": "gpt-3.5-turbo",
         "choices": [{
+            "index": 0,
             "message": {
                 "role": "assistant",
                 "content": response
-            }
+            },
+            "finish_reason": "stop"
         }]
     }
 
